@@ -1,0 +1,243 @@
+/* Banner.css */
+.banner {
+  display: flex;
+  min-height: 500px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 2rem 5%;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-content {
+  flex: 1;
+  max-width: 550px;
+  z-index: 2;
+}
+
+.banner-content h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.banner-content p {
+  font-size: 1.2rem;
+  color: #475569;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.banner-stats {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat h3 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #4361ee;
+  margin-bottom: 0.5rem;
+}
+
+.stat p {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.banner-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-primary {
+  background-color: #4361ee;
+  color: white;
+  border: none;
+  padding: 0.9rem 1.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: #3a56d4;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(67, 97, 238, 0.25);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #4361ee;
+  border: 2px solid #4361ee;
+  padding: 0.9rem 1.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(67, 97, 238, 0.1);
+  transform: translateY(-2px);
+}
+
+.banner-visual {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 400px;
+}
+
+.main-visual {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle-background {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
+  opacity: 0.1;
+}
+
+.main-visual img {
+  width: 200px;
+  height: 200px;
+  z-index: 2;
+}
+
+.floating-card {
+  position: absolute;
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 160px;
+  z-index: 3;
+  animation: float 3s ease-in-out infinite;
+}
+
+.floating-card i {
+  color: #4361ee;
+  font-size: 1.2rem;
+}
+
+.floating-card p {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0;
+  color: #334155;
+}
+
+.card-1 {
+  top: 20px;
+  left: 0;
+  animation-delay: 0s;
+}
+
+.card-2 {
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  animation-delay: 0.5s;
+}
+
+.card-3 {
+  bottom: 30px;
+  left: 50px;
+  animation-delay: 1s;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Responsive design */
+@media screen and (max-width: 968px) {
+  .banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .banner-content {
+    margin-bottom: 3rem;
+  }
+
+  .banner-stats {
+    justify-content: center;
+  }
+
+  .banner-buttons {
+    justify-content: center;
+  }
+
+  .banner-visual {
+    height: 300px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .banner-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .banner-content p {
+    font-size: 1rem;
+  }
+
+  .banner-stats {
+    gap: 1.5rem;
+  }
+
+  .stat h3 {
+    font-size: 1.8rem;
+  }
+
+  .banner-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .floating-card {
+    width: 140px;
+    padding: 0.8rem;
+  }
+}
