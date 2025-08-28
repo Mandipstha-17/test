@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./css/TeacherDashboard.css";
 
 function ExamSchedule({ batch }) {
   const [exams, setExams] = useState([

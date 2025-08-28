@@ -1,4 +1,4 @@
-/* Navbar.css */
+/* Navbar-og.css */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
@@ -12,7 +12,7 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
-.navbar {
+.navbar-og {
   background-color: #ffffff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 0.8rem 1.5rem;
@@ -21,7 +21,7 @@ body {
   z-index: 1000;
 }
 
-.nav-container {
+.nav-container-og {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,7 +29,7 @@ body {
   margin: 0 auto;
 }
 
-.nav-logo {
+.nav-logo-og {
   display: flex;
   align-items: center;
   font-size: 1.5rem;
@@ -38,22 +38,28 @@ body {
   text-decoration: none;
 }
 
-.nav-logo i {
+.nav-logo-og i {
   margin-right: 0.5rem;
   font-size: 1.8rem;
 }
 
-.nav-menu {
+.nav-logo-og img {
+  width: 80px;
+  height: auto;
+  margin-top: 5px;
+}
+
+.nav-menu-og {
   display: flex;
   align-items: center;
   list-style: none;
 }
 
-.nav-item {
+.nav-item-og {
   margin: 0 1rem;
 }
 
-.nav-link {
+.nav-link-og {
   color: #495057;
   text-decoration: none;
   font-weight: 500;
@@ -63,11 +69,11 @@ body {
   transition: color 0.3s ease;
 }
 
-.nav-link:hover {
+.nav-link-og:hover {
   color: #4361ee;
 }
 
-.nav-link::after {
+.nav-link-og::after {
   content: "";
   position: absolute;
   width: 0;
@@ -78,11 +84,11 @@ body {
   transition: width 0.3s ease;
 }
 
-.nav-link:hover::after {
+.nav-link-og:hover::after {
   width: 100%;
 }
 
-.login-btn {
+.login-btn-og {
   background-color: #4361ee;
   color: white;
   border: none;
@@ -94,19 +100,19 @@ body {
   font-size: 1rem;
 }
 
-.login-btn:hover {
+.login-btn-og:hover {
   background-color: #3a56d4;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(67, 97, 238, 0.2);
 }
 
-.nav-toggle {
+.nav-toggle-og {
   display: none;
   flex-direction: column;
   cursor: pointer;
 }
 
-.bar {
+.bar-og {
   width: 25px;
   height: 3px;
   background-color: #4361ee;
@@ -116,7 +122,7 @@ body {
 
 /* Responsive design */
 @media screen and (max-width: 768px) {
-  .nav-menu {
+  .nav-menu-og {
     position: fixed;
     left: -100%;
     top: 70px;
@@ -129,15 +135,15 @@ body {
     z-index: 999;
   }
 
-  .nav-menu.active {
+  .nav-menu-og.active-og {
     left: 0;
   }
 
-  .nav-item {
+  .nav-item-og {
     margin: 1.5rem 0;
   }
 
-  .nav-toggle {
+  .nav-toggle-og {
     display: flex;
   }
 }

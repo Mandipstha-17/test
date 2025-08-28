@@ -1,4 +1,5 @@
 import React from "react";
+import "./css/std_style.css";
 
 function AttendanceView() {
   const attendanceData = [

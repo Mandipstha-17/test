@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./css/TeacherDashboard.css";
 
 function UpdateAttendance({ batch }) {
   const [date, setDate] = useState("");

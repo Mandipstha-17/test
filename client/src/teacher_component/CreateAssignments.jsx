@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./css/Style.css";
 
 function CreateAssignments({ batch }) {
   const [subject, setSubject] = useState("");

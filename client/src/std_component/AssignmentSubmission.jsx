@@ -20,7 +20,7 @@ function AssignmentSubmission() {
     <div className="card">
       <h2>Submit Assignment</h2>
       <div>
-        <label>Select Assignment File:</label>
+        <label>Select Assignment File: </label>
         <input type="file" onChange={handleFileChange} />
       </div>
       <button className="submit-button" onClick={handleSubmit}>

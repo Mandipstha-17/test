@@ -3,6 +3,7 @@ import CreateAssignments from "./CreateAssignments";
 import UpdateAttendance from "./UpdateAttendance";
 import ExamSchedule from "./ExamSchedule";
 import ClassesSchedule from "./ClassesSchedule";
+import "./css/TeacherDashboard.css";
 
 function TeacherDashboard({ faculty, batch }) {
   const [activeTab, setActiveTab] = useState("assignments");

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SelectionPage from "./SelectionPage";
 import TeacherDashboard from "./TeacherDashboard";
+import "./css/Teacher.css";
 
 function TeacherApp() {
   const [selectedFaculty, setSelectedFaculty] = useState(null);

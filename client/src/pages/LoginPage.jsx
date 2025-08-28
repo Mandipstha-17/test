@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './css/LoginPage.css';
+import "./css/LoginPage.css";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
@@ -46,10 +46,22 @@ const LoginPage = () => {
     <div className="login-page">
       <h1>EduLearn Login</h1>
       <form onSubmit={handleSubmit}>
-        <input type="email" name="email" placeholder="Email"
-          value={loginData.email} onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Password"
-          value={loginData.password} onChange={handleChange} required />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={loginData.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={loginData.password}
+          onChange={handleChange}
+          required
+        />
         {error && <p className="error">{error}</p>}
         <button type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
