@@ -6,6 +6,8 @@ import "./App.css";
 import AdminPortal from "./pages/AdminPortal";
 import StudentDashboard from "./std_component/StudentDashboard";
 import TeacherApp from "./teacher_component/TeacherApp";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin/:collegeId" element={<AdminPortal />} />
           <Route path="/student-dashboard" element={<StudentDashboard />} />
