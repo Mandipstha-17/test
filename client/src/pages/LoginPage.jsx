@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./css/LoginPage.css";
 import Image from "../assets/logo.png";
+import config from "../config";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
@@ -17,7 +18,7 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3000/api/auth/login", {
+      const res = await fetch(`${config.API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData),

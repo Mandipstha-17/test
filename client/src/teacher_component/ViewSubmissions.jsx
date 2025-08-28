@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./css/Style.css";
+import config from "../config";
 
 function ViewSubmissions() {
   const [assignments, setAssignments] = useState([]);
@@ -14,7 +15,7 @@ function ViewSubmissions() {
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/assignments", {
+        const res = await fetch(`${config.API_BASE_URL}/api/assignments`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -34,7 +35,7 @@ function ViewSubmissions() {
     setLoadingSubmissions(true);
     try {
       const res = await fetch(
-        `http://localhost:3000/api/assignments/${assignmentId}/submissions`,
+        `${config.API_BASE_URL}/api/assignments/${assignmentId}/submissions`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await res.json();
@@ -70,7 +71,7 @@ function ViewSubmissions() {
     
     try {
       const res = await fetch(
-        `http://localhost:3000/api/submissions/${submissionId}/grade`,
+        `${config.API_BASE_URL}/api/submissions/${submissionId}/grade`,
         {
           method: "POST",
           headers: {
@@ -97,7 +98,7 @@ function ViewSubmissions() {
     
     try {
       const res = await fetch(
-        `http://localhost:3000/api/assignments/${assignmentId}`,
+        `${config.API_BASE_URL}/api/assignments/${assignmentId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -107,7 +108,7 @@ function ViewSubmissions() {
       if (!res.ok) throw new Error(data.message || "Failed to delete assignment");
       alert("Assignment deleted successfully");
       // Refresh assignments list
-      const refreshRes = await fetch("http://localhost:3000/api/assignments", {
+      const refreshRes = await fetch(`${config.API_BASE_URL}/api/assignments`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const refreshData = await refreshRes.json();
@@ -187,8 +188,8 @@ function ViewSubmissions() {
                   
                                      <div style={{ marginBottom: "15px" }}>
                      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                       <a
-                         href={`http://localhost:3000/${s.filePath}`}
+                                               <a
+                          href={`${config.API_BASE_URL}/${s.filePath}`}
                          target="_blank"
                          rel="noreferrer"
                          style={{ 

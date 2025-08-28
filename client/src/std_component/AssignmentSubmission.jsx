@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./css/std_style.css";
+import config from "../config";
 
 function AssignmentSubmission() {
   const [assignments, setAssignments] = useState([]);
@@ -16,7 +17,7 @@ function AssignmentSubmission() {
 
   const fetchAssignments = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/assignments", {
+      const res = await fetch(`${config.API_BASE_URL}/api/assignments`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -50,7 +51,7 @@ function AssignmentSubmission() {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/api/assignments/${selectedAssignment._id}/submit`,
+        `${config.API_BASE_URL}/api/assignments/${selectedAssignment._id}/submit`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },

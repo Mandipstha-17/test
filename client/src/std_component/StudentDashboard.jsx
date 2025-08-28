@@ -5,6 +5,7 @@ import AssignmentSubmission from "./AssignmentSubmission";
 import ClassesView from "./ClassesView";
 import TimetablePlan from "./TimetablePlan";
 import Chatbot from "./Chatbot";
+import config from "../config";
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("attendance");
@@ -21,7 +22,7 @@ function Dashboard() {
     
     const fetchMe = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/user", {
+        const res = await fetch(`${config.API_BASE_URL}/api/user`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) return;

@@ -6,6 +6,7 @@ import UpdateAttendance from "./UpdateAttendance";
 import ExamSchedule from "./ExamSchedule";
 import ClassesSchedule from "./ClassesSchedule";
 import "./css/TeacherDashboard.css";
+import config from "../config";
 
 function TeacherDashboard() {
   const [activeTab, setActiveTab] = useState("assignments");
@@ -17,7 +18,7 @@ function TeacherDashboard() {
     const fetchMe = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:3000/api/user", {
+        const res = await fetch(`${config.API_BASE_URL}/api/user`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) return;

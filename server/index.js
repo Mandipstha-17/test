@@ -17,7 +17,10 @@ const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: true, // Allow all origins
+  credentials: true // Allow credentials
+}));
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -46,6 +49,7 @@ const userSchema = new mongoose.Schema({
   subject: String,
   batch: String,
   college: String,
+  createdAt: { type: Date, default: Date.now },
 });
 const User = mongoose.model("User", userSchema);
 
@@ -128,33 +132,50 @@ const requireRole = (role) => {
 
 // Login route
 app.post("/api/auth/login", async (req, res) => {
+  console.log("🔐 Login attempt from:", req.ip);
+  console.log("📧 Email:", req.body.email);
+  
   const { email, password } = req.body;
 
-  if (!email || !password)
+  if (!email || !password) {
+    console.log("❌ Missing email or password");
     return res.status(400).json({ message: "Email and password required" });
+  }
 
-  const user = await User.findOne({ email });
-  if (!user) return res.status(400).json({ message: "Invalid credentials" });
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      console.log("❌ User not found:", email);
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      console.log("❌ Password mismatch for:", email);
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
 
-  const token = jwt.sign(
-    { userId: user._id, role: user.role },
-    JWT_SECRET,
-    { expiresIn: "7d" }
-  );
+    const token = jwt.sign(
+      { userId: user._id, role: user.role },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
-  res.json({
-    message: "Login successful",
-    token,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    },
-  });
+    console.log("✅ Login successful for:", email, "Role:", user.role);
+    res.json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("❌ Login error:", error);
+    res.status(500).json({ message: "Server error during login" });
+  }
 });
 
 // New route: Get current authenticated user
@@ -316,6 +337,51 @@ app.delete("/api/assignments/:assignmentId", authenticateToken, async (req, res)
   res.json({ message: "Assignment deleted" });
 });
 
+// Admin: get all users
+app.get("/api/admin/users", authenticateToken, requireRole("admin"), async (req, res) => {
+  try {
+    const users = await User.find({}).select("-password").sort({ createdAt: -1 });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching users", error: err.message });
+  }
+});
+
+// Admin: get database statistics
+app.get("/api/admin/stats", authenticateToken, requireRole("admin"), async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+    const totalAdmins = await User.countDocuments({ role: "admin" });
+    const totalTeachers = await User.countDocuments({ role: "teacher" });
+    const totalStudents = await User.countDocuments({ role: "student" });
+    const totalAssignments = await Assignment.countDocuments();
+    const totalSubmissions = await Submission.countDocuments();
+    
+    // Get recent activity
+    const recentUsers = await User.find({}).sort({ createdAt: -1 }).limit(5).select("name email role createdAt");
+    const recentAssignments = await Assignment.find({}).sort({ createdAt: -1 }).limit(5).select("subject description createdAt");
+    
+    res.json({
+      users: {
+        total: totalUsers,
+        admins: totalAdmins,
+        teachers: totalTeachers,
+        students: totalStudents
+      },
+      assignments: {
+        total: totalAssignments,
+        submissions: totalSubmissions
+      },
+      recent: {
+        users: recentUsers,
+        assignments: recentAssignments
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching statistics", error: err.message });
+  }
+});
+
 // Admin: delete ALL teachers and students (with related data)
 app.delete("/api/admin/purge-users", authenticateToken, requireRole("admin"), async (req, res) => {
   try {
@@ -358,8 +424,27 @@ app.use((err, req, res, next) => {
 
 // Root test
 app.get("/", (req, res) => {
-  res.send("🚀 College Portal Backend Running...");
+  res.json({
+    message: "🚀 College Portal Backend Running...",
+    timestamp: new Date().toISOString(),
+    clientIP: req.ip,
+    userAgent: req.get('User-Agent')
+  });
+});
+
+// Test connectivity route
+app.get("/api/test", (req, res) => {
+  res.json({
+    message: "✅ Server is accessible",
+    timestamp: new Date().toISOString(),
+    clientIP: req.ip,
+    headers: req.headers
+  });
 });
 
 // Start server
-app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`🌐 Server accessible from other devices on your network`);
+  console.log(`📱 Use your computer's IP address to access from other devices`);
+});

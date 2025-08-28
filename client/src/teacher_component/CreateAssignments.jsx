@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./css/Style.css";
+import config from "../config";
 
 function CreateAssignments() {
   const [subject, setSubject] = useState("");
@@ -14,7 +15,7 @@ function CreateAssignments() {
     
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:3000/api/assignments", {
+      const res = await fetch(`${config.API_BASE_URL}/api/assignments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
