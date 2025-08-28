@@ -1,458 +1,165 @@
 /* AdminPortal.css */
-:root {
-  --primary: #4361ee;
-  --primary-dark: #3a56d4;
-  --secondary: #6c757d;
-  --light: #f8f9fa;
-  --dark: #343a40;
-  --college-color: #4361ee;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.admin-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-  background-color: #f5f7fb;
-  color: #333;
-  line-height: 1.6;
-}
-
-/* Navbar Styles */
-.navbar {
-  background-color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 0.8rem 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.nav-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.nav-logo {
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--college-color, var(--primary));
-  text-decoration: none;
-}
-
-.nav-logo i {
-  margin-right: 0.5rem;
+.admin-container h2 {
+  text-align: center;
+  color: #4361ee;
+  margin-bottom: 2rem;
   font-size: 1.8rem;
 }
 
-.nav-menu {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.nav-link {
-  color: #495057;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 1rem;
-  padding: 0.5rem 0;
-  position: relative;
-  transition: color 0.3s ease;
-}
-
-.nav-link:hover {
-  color: var(--college-color, var(--primary));
-}
-
-.login-btn {
-  background-color: var(--college-color, var(--primary));
-  color: white;
-  border: none;
-  padding: 0.6rem 1.5rem;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 1rem;
-  text-decoration: none;
-}
-
-.login-btn:hover {
-  background-color: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(67, 97, 238, 0.2);
-}
-
-/* Landing Page Styles */
-.landing-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-}
-
-.landing-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 4rem 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-  min-height: 80vh;
-}
-
-.landing-content h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 1rem;
-}
-
-.landing-content p {
-  font-size: 1.2rem;
-  color: #475569;
-  margin-bottom: 3rem;
-}
-
-.college-links {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  width: 100%;
-}
-
-.college-links h3 {
-  margin-bottom: 1.5rem;
-  color: #374151;
-}
-
-.links-container {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.college-link {
-  background-color: var(--primary);
-  color: white;
-  padding: 0.8rem 1.5rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.college-link:hover {
-  background-color: var(--primary-dark);
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
-}
-
-/* Login Page Styles */
-.login-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-}
-
-.login-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 2rem;
-  min-height: 80vh;
-}
-
-.login-form {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 450px;
-}
-
-.login-form h2 {
-  text-align: center;
-  margin-bottom: 0.5rem;
-  color: #1e293b;
-}
-
-.login-form > p {
-  text-align: center;
+.college-select {
   margin-bottom: 2rem;
-  color: #64748b;
+  text-align: center;
 }
 
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
+.college-select label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
   color: #374151;
 }
 
-.form-group input {
-  width: 100%;
+.college-select select {
   padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 300px;
+  transition: border-color 0.3s;
+}
+
+.college-select select:focus {
+  outline: none;
+  border-color: #4361ee;
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.buttons button {
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.buttons button:first-child {
+  background-color: #4361ee;
+  color: white;
+}
+
+.buttons button:first-child:hover {
+  background-color: #3a56d4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+}
+
+.buttons button:last-child {
+  background-color: #2a9d8f;
+  color: white;
+}
+
+.buttons button:last-child:hover {
+  background-color: #23867a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3);
+}
+
+.form-box {
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.form-box h3 {
+  text-align: center;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.form-box input {
+  width: 100%;
+  padding: 0.9rem;
+  margin-bottom: 1rem;
   border: 1px solid #d1d5db;
   border-radius: 6px;
   font-size: 1rem;
   transition: border-color 0.3s;
 }
 
-.form-group input:focus {
+.form-box input:focus {
   outline: none;
-  border-color: var(--college-color, var(--primary));
+  border-color: #4361ee;
   box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
 }
 
-.login-submit-btn {
+.form-box button {
   width: 100%;
-  background-color: var(--college-color, var(--primary));
+  background-color: #4361ee;
   color: white;
   border: none;
-  padding: 0.9rem;
+  padding: 1rem;
   border-radius: 6px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
 }
 
-.login-submit-btn:hover {
-  background-color: var(--primary-dark);
+.form-box button:hover {
+  background-color: #3a56d4;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
 }
 
-.login-links {
-  display: flex;
-  justify-content: space-between;
-}
-
-.login-links a {
-  color: var(--college-color, var(--primary));
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.login-links a:hover {
-  text-decoration: underline;
-}
-
-/* Admin Portal Styles */
-.admin-portal {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-}
-
-.admin-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.admin-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.admin-header h1 {
-  font-size: 2.5rem;
-  color: #1e293b;
-  margin-bottom: 0.5rem;
-}
-
-.admin-header p {
-  font-size: 1.1rem;
-  color: #64748b;
-}
-
-.registration-options {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
-}
-
-.registration-card {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.registration-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-.card-icon {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: rgba(67, 97, 238, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem;
-}
-
-.card-icon i {
-  font-size: 2rem;
-  color: var(--college-color, var(--primary));
-}
-
-.registration-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-  color: #1e293b;
-}
-
-.registration-card p {
-  color: #64748b;
-  margin-bottom: 1.5rem;
-}
-
-.card-btn {
-  background-color: var(--college-color, var(--primary));
-  color: white;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.card-btn:hover {
-  background-color: var(--primary-dark);
-}
-
-.registration-form {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  margin-top: 2rem;
-}
-
-.registration-form h2 {
-  margin-bottom: 1.5rem;
-  color: #1e293b;
-  text-align: center;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-}
-
-.form-group textarea:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: var(--college-color, var(--primary));
-  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
-}
-
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.form-actions button {
-  padding: 0.8rem 1.5rem;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.form-actions button:first-child {
-  background-color: #f8f9fa;
-  color: #495057;
-  border: 1px solid #dee2e6;
-}
-
-.form-actions button:first-child:hover {
-  background-color: #e9ecef;
-}
-
-.form-actions button:last-child {
-  background-color: var(--college-color, var(--primary));
-  color: white;
-  border: none;
-}
-
-.form-actions button:last-child:hover {
-  background-color: var(--primary-dark);
-}
-
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-  .nav-container {
-    flex-direction: column;
-    gap: 1rem;
+  .admin-container {
+    margin: 1rem;
+    padding: 1.5rem;
   }
 
-  .nav-menu {
+  .buttons {
+    flex-direction: column;
+  }
+
+  .buttons button {
     width: 100%;
-    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .admin-container {
+    padding: 1rem;
   }
 
-  .landing-content h1 {
-    font-size: 2.2rem;
+  .admin-container h2 {
+    font-size: 1.5rem;
   }
 
-  .links-container {
-    flex-direction: column;
-  }
-
-  .registration-options {
-    grid-template-columns: 1fr;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .form-actions {
-    flex-direction: column;
-  }
-
-  .form-actions button {
-    width: 100%;
+  .form-box {
+    padding: 1.5rem;
   }
 }
