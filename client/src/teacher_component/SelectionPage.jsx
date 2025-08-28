@@ -39,10 +39,10 @@ function SelectionPage({ onSelect }) {
               required
             >
               <option value="">Select Faculty</option>
-              <option value="Computer Science">Computer Science</option>
-              <option value="Engineering">Engineering</option>
-              <option value="Business">Business</option>
-              <option value="Arts">Arts</option>
+              <option value="Csit">Bsc.CSIT</option>
+              <option value="Bca">BCA</option>
+              <option value="Bit">BIT</option>
+              {/* <option value="Arts">Arts</option> */}
             </select>
           </div>
 

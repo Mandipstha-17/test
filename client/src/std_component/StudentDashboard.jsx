@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AttendanceView from "./Attendance";
 import AssignmentSubmission from "./AssignmentSubmission";
 import ClassesView from "./ClassesView";
@@ -7,12 +8,47 @@ import Chatbot from "./Chatbot";
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("attendance");
+  const [displayName, setDisplayName] = useState("");
+  const [userInfo, setUserInfo] = useState({});
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    
+    const fetchMe = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/user", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) return;
+        const me = await res.json();
+        setDisplayName(me.name || me.email || "Student");
+        setUserInfo(me);
+      } catch {}
+    };
+    fetchMe();
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <div>
       <nav className="navbar">
-        <h1>Student Dashboard</h1>
-        <button>Logout</button>
+        <div>
+          <h1>Student Dashboard - {displayName}</h1>
+          <p style={{ margin: "5px 0", color: "#666", fontSize: "14px" }}>
+            {userInfo.faculty && userInfo.batch ? `${userInfo.faculty} - Batch ${userInfo.batch}` : ""}
+          </p>
+        </div>
+        <button onClick={handleLogout}>Logout</button>
       </nav>
       <div className="container">
         <div className="tabs">

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./css/AdminPortal.css";
 
 function AdminPortal() {
@@ -6,6 +7,7 @@ function AdminPortal() {
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState("");
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   const faculties = ["BCA", "Bsc.CSIT", "BIT", "BBA"];
   const colleges = ["College A", "College B", "College C"];
@@ -33,9 +35,29 @@ function AdminPortal() {
     }
   };
 
+  const handleBackToLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="admin-container">
-      <h2>Admin Portal</h2>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        <h2>Admin Portal</h2>
+        <button 
+          onClick={handleBackToLogin}
+          style={{ 
+            backgroundColor: "#007bff", 
+            color: "white", 
+            padding: "8px 16px", 
+            border: "none", 
+            borderRadius: "4px", 
+            cursor: "pointer" 
+          }}
+        >
+          Back to Login
+        </button>
+      </div>
+      
       <div>
         <button onClick={() => setFormType("teacher")}>Create Teacher</button>
         <button onClick={() => setFormType("student")}>Create Student</button>
