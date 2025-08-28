@@ -1,15 +1,16 @@
 .login-page {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 80vh;
   background: #f4f6f9;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .login-page h1 {
   text-align: center;
-  color: #333;
+  color: #4361ee;
   margin-bottom: 20px;
 }
 
@@ -18,7 +19,7 @@
   padding: 30px 40px;
   border-radius: 12px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  width: 320px;
+  width: 420px;
 }
 
 .login-page input {
@@ -41,6 +42,11 @@
   font-size: 13px;
   margin-top: -6px;
   margin-bottom: 8px;
+}
+
+.logo-image-lg {
+  width: 180px;
+  height: auto;
 }
 
 .login-page button {

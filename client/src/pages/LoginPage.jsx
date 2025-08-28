@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./css/LoginPage.css";
+import Image from "../assets/logo.png";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
@@ -44,7 +45,8 @@ const LoginPage = () => {
 
   return (
     <div className="login-page">
-      <h1>EduLearn Login</h1>
+      <img src={Image} alt="Logo" className="logo-image-lg" />
+      <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="email"
