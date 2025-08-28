@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import "./App.css";
 import AdminPortal from "./pages/AdminPortal";
 import StudentDashboard from "./std_component/StudentDashboard";
+import TeacherApp from "./teacher_component/TeacherApp";
 
 function App() {
   return (
@@ -14,8 +15,8 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin/:collegeId" element={<AdminPortal />} />
-          {/* <Route path="/student-dashboard" element={<StudentDashboard />} /> */}
           <Route path="/student-dashboard" element={<StudentDashboard />} />
+          <Route path="/teacher-dashboard" element={<TeacherApp />} />
         </Routes>
       </div>
     </Router>
