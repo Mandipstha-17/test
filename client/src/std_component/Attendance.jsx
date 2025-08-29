@@ -1,36 +1,61 @@
-import React from "react";
-import "./css/std_style.css";
+import React, { useEffect, useState } from "react";
+import config from "../config";
 
-function AttendanceView() {
-  const attendanceData = [
-    { date: "2025-08-25", subject: "Mathematics", status: "Present" },
-    { date: "2025-08-25", subject: "Physics", status: "Absent" },
-    { date: "2025-08-26", subject: "Chemistry", status: "Present" },
-  ];
+function Attendance() {
+  const [links, setLinks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const fetchAttendance = async () => {
+      try {
+        const res = await fetch(`${config.API_BASE_URL}/api/attendance`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const data = await res.json();
+
+        // Extract all student URLs from attendance records
+        const urls = data.map(record => record.sheetLink?.studentUrl || record.sheetLink?.url);
+        setLinks(urls.filter(Boolean));
+      } catch (err) {
+        console.error("Error fetching attendance:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAttendance();
+  }, [token]);
+
+  if (loading) return <p>Loading attendance sheets...</p>;
+
+  if (links.length === 0) return <p>No attendance sheets available.</p>;
 
   return (
-    <div className="card">
-      <h2>Attendance Records</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Subject</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {attendanceData.map((record, index) => (
-            <tr key={index}>
-              <td>{record.date}</td>
-              <td>{record.subject}</td>
-              <td>{record.status}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div>
+      {links.map((url, idx) => (
+        <div key={idx} style={{ marginBottom: "10px" }}>
+          <a
+            href={url}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              backgroundColor: "#007BFF",
+              color: "white",
+              padding: "10px 16px",
+              textDecoration: "none",
+              borderRadius: "6px",
+              fontWeight: "bold"
+            }}
+          >
+            📄 Attendance Sheet {idx + 1}
+          </a>
+        </div>
+      ))}
     </div>
   );
 }
 
-export default AttendanceView;
+export default Attendance;

@@ -1,59 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./css/TeacherDashboard.css";
+import config from "../config";
 
-function UpdateAttendance({ batch }) {
-  const [date, setDate] = useState("");
-  const students = ["Student A", "Student B", "Student C"]; // Placeholder students
-  const [attendance, setAttendance] = useState(
-    students.reduce((acc, student) => ({ ...acc, [student]: false }), {})
-  );
+function AttendanceSheetOnly() {
+  const [defaultSheet, setDefaultSheet] = useState(null);
+  const token = localStorage.getItem("token");
 
-  const handleToggle = (student) => {
-    setAttendance({ ...attendance, [student]: !attendance[student] });
-  };
+  useEffect(() => {
+    const fetchDefaultSheet = async () => {
+      try {
+        const res = await fetch(`${config.API_BASE_URL}/api/attendance/default-sheet`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(
-      `Attendance updated for batch ${batch} on ${date}: ${JSON.stringify(
-        attendance
-      )}`
-    );
-    // In real app, send to backend to update student views
-  };
+        if (res.ok) {
+          const data = await res.json();
+          setDefaultSheet(data.defaultSheet);
+        } else {
+          console.error("Failed to fetch attendance sheet");
+        }
+      } catch (err) {
+        console.error("Error fetching default sheet:", err);
+      }
+    };
+
+    fetchDefaultSheet();
+  }, [token]);
 
   return (
     <div className="card">
-      <h2>Update Attendance for Batch {batch}</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Date:</label>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
+      <h2>Attendance Sheet (Teacher Edit Access)</h2>
+
+      {defaultSheet ? (
+        <div
+          style={{
+            backgroundColor: "#e8f5e8",
+            padding: "15px",
+            borderRadius: "8px",
+            border: "1px solid #4CAF50",
+          }}
+        >
+          <a
+            href={defaultSheet.url}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              backgroundColor: "#4CAF50",
+              color: "white",
+              padding: "12px 20px",
+              textDecoration: "none",
+              borderRadius: "6px",
+              display: "block",
+              textAlign: "center",
+              fontSize: "16px",
+              fontWeight: "bold",
+            }}
+          >
+            🔗 Open Attendance Sheet (Edit Mode)
+          </a>
         </div>
-        <ul>
-          {students.map((student, index) => (
-            <li key={index}>
-              {student}:
-              <input
-                type="checkbox"
-                checked={attendance[student]}
-                onChange={() => handleToggle(student)}
-              />{" "}
-              Present
-            </li>
-          ))}
-        </ul>
-        <button type="submit" className="submit-button">
-          Update Attendance
-        </button>
-      </form>
+      ) : (
+        <p>Loading attendance sheet...</p>
+      )}
     </div>
   );
 }
 
-export default UpdateAttendance;
+export default AttendanceSheetOnly;

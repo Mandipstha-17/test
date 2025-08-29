@@ -187,18 +187,44 @@ function ViewSubmissions() {
                   </div>
                   
                                      <div style={{ marginBottom: "15px" }}>
-                     <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                                               <a
+                                          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+                       <a
                           href={`${config.API_BASE_URL}/${s.filePath}`}
                          target="_blank"
                          rel="noreferrer"
+                         onClick={(e) => {
+                           // Add error handling for PDF viewing
+                           const link = e.target;
+                           const originalText = link.textContent;
+                           
+                           link.textContent = "Loading...";
+                           link.style.backgroundColor = "#ffc107";
+                           
+                           // Check if file exists before opening
+                           fetch(`${config.API_BASE_URL}/${s.filePath}`, { method: 'HEAD' })
+                             .then(response => {
+                               if (!response.ok) {
+                                 e.preventDefault();
+                                 alert("PDF file not found or cannot be accessed. Please contact the administrator.");
+                                 link.textContent = originalText;
+                                 link.style.backgroundColor = "#007bff";
+                               }
+                             })
+                             .catch(error => {
+                               e.preventDefault();
+                               alert("Error accessing PDF file. Please try again later.");
+                               link.textContent = originalText;
+                               link.style.backgroundColor = "#007bff";
+                             });
+                         }}
                          style={{ 
                            backgroundColor: "#007bff",
                            color: "white", 
                            padding: "8px 16px",
                            textDecoration: "none",
                            borderRadius: "4px",
-                           fontWeight: "bold"
+                           fontWeight: "bold",
+                           cursor: "pointer"
                          }}
                        >
                          📄 View PDF

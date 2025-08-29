@@ -17,9 +17,17 @@ const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
 // Middleware
+// app.use(cors({
+//   origin: true, // Allow all origins
+//   credentials: true // Allow credentials
+// }));
+
+// Configure CORS
 app.use(cors({
-  origin: true, // Allow all origins
-  credentials: true // Allow credentials
+  origin: 'http://localhost:5173', // Your frontend URL
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -93,16 +101,51 @@ const submissionSchema = new mongoose.Schema({
 });
 const Submission = mongoose.model("Submission", submissionSchema);
 
-// Multer for file uploads (PDF-only)
+// Attendance schema
+const attendanceSchema = new mongoose.Schema({
+  teacher: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  batch: String,
+  subject: String,
+  date: Date,
+  sheetLink: {
+    url: String, // Teacher edit URL
+    studentUrl: String, // Student view-only URL
+    title: String,
+    createdAt: { type: Date, default: Date.now }
+  },
+  createdAt: { type: Date, default: Date.now },
+});
+const Attendance = mongoose.model("Attendance", attendanceSchema);
+
+// Default attendance sheet configuration
+const DEFAULT_ATTENDANCE_SHEET = {
+  url: "https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?usp=sharing",
+  title: "Default Attendance Sheet",
+  // Student view-only URL (same sheet, different access)
+  studentUrl: "https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/preview"
+};
+
+// Multer for file uploads (PDF and Excel)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadsDir),
   filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname)),
 });
+
 const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
     const isPdf = file.mimetype === "application/pdf" || file.originalname.toLowerCase().endsWith(".pdf");
-    if (!isPdf) return cb(new Error("Only PDF files are allowed"));
+    const isExcel = file.mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || 
+                   file.mimetype === "application/vnd.ms-excel" ||
+                   file.originalname.toLowerCase().endsWith(".xlsx") ||
+                   file.originalname.toLowerCase().endsWith(".xls");
+    
+    if (req.path.includes('/submit') && !isPdf) {
+      return cb(new Error("Only PDF files are allowed for assignments"));
+    }
+    if (req.path.includes('/attendance') && !isExcel) {
+      return cb(new Error("Only Excel files are allowed for attendance"));
+    }
     cb(null, true);
   },
 });
@@ -146,13 +189,13 @@ app.post("/api/auth/login", async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       console.log("❌ User not found:", email);
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Email not found. Please check your email address." });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       console.log("❌ Password mismatch for:", email);
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Incorrect password. Please try again." });
     }
 
     const token = jwt.sign(
@@ -228,10 +271,13 @@ app.post(
       const found = await Assignment.findById(assignmentId);
       if (!found) return res.status(404).json({ message: "Assignment not found" });
 
+      // Store relative path instead of absolute path
+      const relativePath = req.file ? path.relative(__dirname, req.file.path) : null;
+
       const submission = await Submission.create({
         assignment: assignmentId,
         student: req.user.userId,
-        filePath: req.file?.path,
+        filePath: relativePath,
         originalName: req.file?.originalname,
       });
 
@@ -414,6 +460,109 @@ app.delete("/api/admin/purge-users", authenticateToken, requireRole("admin"), as
   }
 });
 
+// Teacher: Add attendance record with default sheet
+app.post("/api/attendance/add", authenticateToken, requireRole("teacher"), async (req, res) => {
+  try {
+    const { batch, subject, date, sheetUrl, sheetTitle } = req.body;
+    
+    if (!batch || !subject || !date) {
+      return res.status(400).json({ message: "Batch, subject, and date are required" });
+    }
+
+    // Use provided URL or default URL
+    const finalSheetUrl = sheetUrl || DEFAULT_ATTENDANCE_SHEET.url;
+    const finalSheetTitle = sheetTitle || DEFAULT_ATTENDANCE_SHEET.title;
+    
+    // Create student view-only URL from the same sheet
+    const finalStudentUrl = sheetUrl ? 
+      sheetUrl.replace('/edit?usp=sharing', '/preview') : 
+      DEFAULT_ATTENDANCE_SHEET.studentUrl;
+
+    // Validate Google Sheets URL if custom URL is provided
+    if (sheetUrl) {
+      const googleSheetsRegex = /^https:\/\/docs\.google\.com\/spreadsheets\/d\/[a-zA-Z0-9-_]+/;
+      if (!googleSheetsRegex.test(sheetUrl)) {
+        return res.status(400).json({ message: "Please provide a valid Google Sheets URL" });
+      }
+    }
+
+    const attendance = await Attendance.create({
+      teacher: req.user.userId,
+      batch,
+      subject,
+      date: new Date(date),
+      sheetLink: {
+        url: finalSheetUrl,
+        studentUrl: finalStudentUrl,
+        title: finalSheetTitle
+      }
+    });
+
+    res.json({ 
+      message: "Attendance record added successfully", 
+      attendance 
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error adding attendance record", error: err.message });
+  }
+});
+
+// Get default attendance sheet info
+app.get("/api/attendance/default-sheet", authenticateToken, requireRole("teacher"), async (req, res) => {
+  try {
+    res.json({
+      defaultSheet: DEFAULT_ATTENDANCE_SHEET
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching default sheet info", error: err.message });
+  }
+});
+
+// Get attendance records (teachers see their own, students see all for their batch)
+app.get("/api/attendance", authenticateToken, async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.user.userId);
+    let filter = {};
+    
+    if (currentUser.role === "teacher") {
+      filter = { teacher: req.user.userId };
+    } else if (currentUser.role === "student") {
+      // Students can see attendance records for their batch
+      // We'll show all records for now, but you can add specific filtering if needed
+      filter = {}; // Show all attendance records for students
+    }
+
+    const attendanceRecords = await Attendance.find(filter)
+      .populate("teacher", "name email")
+      .sort({ date: -1 });
+
+    res.json(attendanceRecords);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching attendance records", error: err.message });
+  }
+});
+
+// Delete attendance record (teachers can delete their own)
+app.delete("/api/attendance/:attendanceId", authenticateToken, requireRole("teacher"), async (req, res) => {
+  try {
+    const { attendanceId } = req.params;
+    const attendance = await Attendance.findById(attendanceId);
+    
+    if (!attendance) {
+      return res.status(404).json({ message: "Attendance record not found" });
+    }
+
+    if (String(attendance.teacher) !== String(req.user.userId)) {
+      return res.status(403).json({ message: "You can only delete your own attendance records" });
+    }
+
+    await Attendance.findByIdAndDelete(attendanceId);
+    res.json({ message: "Attendance record deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error deleting attendance record", error: err.message });
+  }
+});
+
 // Global error handler
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
@@ -447,4 +596,4 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
   console.log(`🌐 Server accessible from other devices on your network`);
   console.log(`📱 Use your computer's IP address to access from other devices`);
-});
+})

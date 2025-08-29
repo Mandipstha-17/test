@@ -33,6 +33,8 @@ function TeacherDashboard() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("teacherFaculty");
+    localStorage.removeItem("teacherBatch");
     navigate("/login");
   };
 
@@ -46,7 +48,19 @@ function TeacherDashboard() {
             {userInfo.subject && ` | Subject: ${userInfo.subject}`}
           </p>
         </div>
-        <button onClick={handleLogout}>Logout</button>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button 
+            onClick={() => {
+              localStorage.removeItem("teacherFaculty");
+              localStorage.removeItem("teacherBatch");
+              window.location.reload();
+            }}
+            style={{ backgroundColor: "#ffc107", color: "#000" }}
+          >
+            Change Faculty/Batch
+          </button>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
       </nav>
       <div className="container">
         <div className="tabs">
