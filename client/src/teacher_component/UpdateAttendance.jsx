@@ -1,69 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./css/TeacherDashboard.css";
-import config from "../config";
 
-function AttendanceSheetOnly() {
-  const [defaultSheet, setDefaultSheet] = useState(null);
-  const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    const fetchDefaultSheet = async () => {
-      try {
-        const res = await fetch(`${config.API_BASE_URL}/api/attendance/default-sheet`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          setDefaultSheet(data.defaultSheet);
-        } else {
-          console.error("Failed to fetch attendance sheet");
-        }
-      } catch (err) {
-        console.error("Error fetching default sheet:", err);
-      }
-    };
-
-    fetchDefaultSheet();
-  }, [token]);
-
+function UpdateAttendance() {
   return (
-    <div className="card">
-      <h2>Attendance Sheet (Teacher Edit Access)</h2>
-
-      {defaultSheet ? (
-        <div
-          style={{
-            backgroundColor: "#e8f5e8",
-            padding: "15px",
-            borderRadius: "8px",
-            border: "1px solid #4CAF50",
-          }}
-        >
-          <a
-            href={defaultSheet.url}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              backgroundColor: "#4CAF50",
-              color: "white",
-              padding: "12px 20px",
-              textDecoration: "none",
-              borderRadius: "6px",
-              display: "block",
-              textAlign: "center",
-              fontSize: "16px",
-              fontWeight: "bold",
-            }}
-          >
-            🔗 Open Attendance Sheet (Edit Mode)
-          </a>
-        </div>
-      ) : (
-        <p>Loading attendance sheet...</p>
-      )}
+    <div style={{ marginTop: "20px" }}>
+      <a
+        href="https://docs.google.com/spreadsheets/d/1mWSjUZh90Nuf8ttk8KTupbMlAP_UL42HSnI-CBY8xps/edit?usp=sharinghttps://docs.google.com/spreadsheets/d/1ugRG-E5fNM0UuCR4DCea9I3MVXDTuEvsf46yU7SWlLo/edit?usp=sharinghttps://docs.google.com/spreadsheets/d/1ugRG-E5fNM0UuCR4DCea9I3MVXDTuEvsf46yU7SWlLo/edit?usp=sharing"
+        target="_blank"
+        rel="noreferrer"
+        style={{
+          display: "inline-block",
+          backgroundColor: "#28a745",
+          color: "white",
+          padding: "10px 16px",
+          textDecoration: "none",
+          borderRadius: "6px",
+          fontWeight: "bold",
+          fontSize: "1rem",
+        }}
+      >
+        Update Attendance
+      </a>
     </div>
   );
 }
 
-export default AttendanceSheetOnly;
+export default UpdateAttendance;

@@ -1,59 +1,25 @@
-import React, { useEffect, useState } from "react";
-import config from "../config";
+import React from "react";
 
 function Attendance() {
-  const [links, setLinks] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    const fetchAttendance = async () => {
-      try {
-        const res = await fetch(`${config.API_BASE_URL}/api/attendance`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const data = await res.json();
-
-        // Extract all student URLs from attendance records
-        const urls = data.map(record => record.sheetLink?.studentUrl || record.sheetLink?.url);
-        setLinks(urls.filter(Boolean));
-      } catch (err) {
-        console.error("Error fetching attendance:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAttendance();
-  }, [token]);
-
-  if (loading) return <p>Loading attendance sheets...</p>;
-
-  if (links.length === 0) return <p>No attendance sheets available.</p>;
-
   return (
-    <div>
-      {links.map((url, idx) => (
-        <div key={idx} style={{ marginBottom: "10px" }}>
-          <a
-            href={url}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              backgroundColor: "#007BFF",
-              color: "white",
-              padding: "10px 16px",
-              textDecoration: "none",
-              borderRadius: "6px",
-              fontWeight: "bold"
-            }}
-          >
-            📄 Attendance Sheet {idx + 1}
-          </a>
-        </div>
-      ))}
+    <div style={{ marginTop: "20px" }}>
+      <a
+        href="https://docs.google.com/spreadsheets/d/1ke4qpNYZh9rxUq6insfrqAWmp8DTmHR40ALRGf67D9Q/edit?usp=sharing"
+        target="_blank"
+        rel="noreferrer"
+        style={{
+          display: "inline-block",
+          backgroundColor: "#28a745",
+          color: "white",
+          padding: "10px 16px",
+          textDecoration: "none",
+          borderRadius: "6px",
+          fontWeight: "bold",
+          fontSize: "1rem",
+        }}
+      >
+        View Attendance
+      </a>
     </div>
   );
 }
