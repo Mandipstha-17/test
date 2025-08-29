@@ -6,6 +6,7 @@ import ClassesView from "./ClassesView";
 import TimetablePlan from "./TimetablePlan";
 import Chatbot from "./Chatbot";
 import config from "../config";
+import Fee from "./Fee";
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState("attendance");
@@ -19,7 +20,7 @@ function Dashboard() {
       navigate("/login");
       return;
     }
-    
+
     const fetchMe = async () => {
       try {
         const res = await fetch(`${config.API_BASE_URL}/api/user`, {
@@ -46,7 +47,9 @@ function Dashboard() {
         <div>
           <h1>Student Dashboard - {displayName}</h1>
           <p style={{ margin: "5px 0", color: "#666", fontSize: "14px" }}>
-            {userInfo.faculty && userInfo.batch ? `${userInfo.faculty} - Batch ${userInfo.batch}` : ""}
+            {userInfo.faculty && userInfo.batch
+              ? `${userInfo.faculty} - Batch ${userInfo.batch}`
+              : ""}
           </p>
         </div>
         <button onClick={handleLogout}>Logout</button>
@@ -89,6 +92,12 @@ function Dashboard() {
           >
             Chatbot
           </button>
+          <button
+            className={`tab-button ${activeTab === "chatbot" ? "active" : ""}`}
+            onClick={() => setActiveTab("fee")}
+          >
+            Fee
+          </button>
         </div>
 
         {activeTab === "attendance" && <AttendanceView />}
@@ -96,6 +105,7 @@ function Dashboard() {
         {activeTab === "classes" && <ClassesView />}
         {activeTab === "timetable" && <TimetablePlan />}
         {activeTab === "chatbot" && <Chatbot />}
+        {activeTab === "fee" && <Fee />}
       </div>
     </div>
   );

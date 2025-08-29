@@ -10,7 +10,7 @@ function Chatbot() {
         ...chatHistory,
         {
           user: message,
-          bot: "This is a placeholder response from the Gemini-powered chatbot.",
+          bot: "You have 1 assignment due this week.",
         },
       ]);
       setMessage("");
